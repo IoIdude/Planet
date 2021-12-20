@@ -1,0 +1,107 @@
+﻿@model Planet.Models.User
+@{
+    ViewBag.Title = "Profile";
+}
+<style>
+    .btn-default {
+        display: inline-block;
+        width: 140px;
+        line-height: 45px;
+        border-radius: 45px;
+        margin: 10px 20px;
+        color: #524f4e;
+        background: white;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+        transition: .3s;
+    }
+
+        .btn-default:hover {
+            background: #2EE59D;
+            box-shadow: 0 15px 20px rgba(46, 229, 157, .4);
+            color: white;
+            transform: translateY(-7px);
+        }
+
+    .form-control {
+        border-radius: 45px;
+    }
+
+        .form-control:hover {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+    .color {
+        margin: 10px;
+        background: linear-gradient(135deg, #71b7e6, #9b59b6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .avatar {
+        border-radius: 50%;
+    }
+
+    .block {
+        max-width: fit-content;
+        margin: 0 auto;
+    }
+
+    .a {
+        padding: 10px;
+    }
+</style>
+
+<form method="get">
+    <div class="form-inline" style="height: 5em; align-items: center; justify-content: center;">
+        <div class="form-group" style="margin-right: 44px;">
+            <input type="text" name="login" class="form-control" placeholder="Login" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Serch" class="btn" />
+        </div>
+        <div style="justify-content: end;">
+            <input type="submit" value="Home" class="btn" asp-action="Profile" />
+        </div>
+    </div>
+</form>
+
+
+<div class="block" style="height: 25em; align-items: center; justify-content: center; display: -webkit-box; ">
+    <div style="margin: 0; box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); padding: 10px; border-radius: 20px; ">
+        <div class="color" style="text-align: center; font-size: 20px; color: deeppink">
+            <p>Profile</p>
+        </div>
+        <div>
+            <div>
+                <img class="avatar" @Html.Raw("<img style='width:100px;height:100px;display: block;margin: 0 auto;image-rendering: pixelated;' src=\"data:image/jpeg;base64," + Convert.ToBase64String(Model.Avatar) + "\" ") />
+            </div>
+        </div>
+        <div style=" box-sizing: border-box; padding: 50px; margin: 0 auto; text-align: center; ">
+            <div class="a">
+                <a class="color" style=" font-size: 19px; color: deeppink">@Html.DisplayFor(model => model.Login)</a>
+            </div>
+            <div class="a">
+                <a class="color" style=" font-size: 19px; color: deeppink">@Html.DisplayFor(model => model.Surname) @Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.middle_Name)</a>
+            </div>
+            <div class="a">
+                <a class="color" style="  font-size: 19px; color: deeppink">@Html.DisplayFor(model => model.birth_day)</a>
+            </div>
+        </div>
+    </div>
+    <form method="post" asp-controller="home" asp-action="Logout">
+        <div class="form-group" style="height: 10em; align-items: center; justify-content: center; display: grid;">
+            <input type="submit" value="Details" class="btn btn-default" asp-action="Details" asp-controller="home" />
+            @if (User.Identity.Name == Model.Login)
+            {
+                <input type="submit" value="Edit" class="btn btn-default" asp-action="Edit" asp-controller="home" asp-route-id="@Model.Id" formmethod="get" />
+                <input type="submit" value="Create post" formmethod="get" class="btn btn-default" asp-action="AddPost" asp-controller="home" />
+                @*<input type="submit" value="Post options" class="btn btn-default" asp-action="EditPost" asp-controller="home" asp-route-id="@item.id" />
+                <input type="submit" value="Delete" class="btn btn-default" asp-action="DeletePost" asp-controller="home" asp-route-id="@item.id" />*@
+            }
+            <input type="submit" value="Posts" class="btn btn-default" formmethod="get" asp-action="Posts" asp-controller="Home" asp-route-id="@Model.Id" /> @*asp-route-login="@Model.Login*@
+            <input type="submit" value="Exit" class="btn btn-default"/>
+        </div>
+    </form>
+</div>
+
+

@@ -1,0 +1,139 @@
+﻿@model Planet.Models.Post;
+@{
+    ViewBag.Title = "Create post";
+}
+
+<style>
+    .btn-default {
+        display: inline-block;
+        width: 140px;
+        line-height: 45px;
+        border-radius: 45px;
+        margin: 10px 113px;
+        color: #524f4e;
+        background: white;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+        transition: .3s;
+        ruby-align: center;
+    }
+
+        .btn-default:hover {
+            background: #2EE59D;
+            box-shadow: 0 15px 20px rgba(46, 229, 157, .4);
+            color: white;
+            transform: translateY(-7px);
+        }
+
+    .form-control {
+        border-radius: 45px;
+    }
+
+        .form-control:hover {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+    .color {
+        margin: 10px;
+        background: linear-gradient(135deg, #71b7e6, #9b59b6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    [type="file"]::-webkit-file-upload-button {
+        cursor: pointer;
+        border-radius: 45px;
+        border: 0px;
+        outline: 0;
+        padding: 10px;
+        transition: .3s;
+        display: none;
+    }
+
+        [type="file"]::-webkit-file-upload-button:hover {
+            background: #F84132;
+            box-shadow: 0 5px 10px rgba(248, 65, 50, .2);
+            color: white;
+            display: none;
+        }
+
+    .uploadImgClass {
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+    }
+
+    .image-preview {
+        width: 300px;
+        min-height: 100px;
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+
+    .image-preview__image {
+        display: none;
+        width: 100%;
+        border-radius: 10px;
+    }
+</style>
+
+<div style="height: 45em; align-items: center; justify-content: center; display: flex;">
+    <form asp-action="AddPost" asp-controller="home" method="post" enctype="multipart/form-data">
+        <div style="margin: 0; box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); padding: 10px; border-radius: 20px; position: center; width: 384.39px;">
+            <div class="color" style="text-align: center; font-size: 20px; color: deeppink">
+                <p>Post</p>
+            </div>
+            <div class="form-group">
+                <input type="text" asp-for="Title" placeholder="Title" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <textarea asp-for="Message" placeholder="Message" class="form-control" required></textarea>
+            </div>
+            <div class="image-preview color" id="imagePreview" style="display: contents;">
+                <img src="" class="image-preview__image" style="justify-content: center; display: contents;"/>
+                <span class="image-preview__default-text"></span>
+            </div>
+            <div class="form-group">
+                <input type="file" name="uploadImg" id="uploadImgId" class="uploadImgClass" accept="image/*" required />
+                <label for="uploadImgId" class="btn btn-default"><span>Select Image</span></label>
+            </div>
+            <div class="form-group" style="position: center;">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </form>
+    <form method="get" asp-controller="home" asp-action="Profile">
+        <input type="submit" value="Back" class="btn btn-default" />
+    </form>
+</div>
+
+<script>
+    const uploadImg = document.getElementById("uploadImgId");
+    const previewContainer = document.getElementById("imagePreview");
+    const previewImage = previewContainer.querySelector(".image-preview__image");
+    const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+
+    uploadImg.addEventListener("change", function () {
+        const file = this.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            previewDefaultText.style.display = "none";
+            previewImage.style.display = "block";
+
+            reader.addEventListener("load", function () {
+                console.log(this);
+                previewImage.setAttribute("src", this.result);
+            });
+
+            reader.readAsDataURL(file);
+        } else {
+            previewDefaultText.style.display = null;
+            previewImage.style.display = null;
+            previewImage.setAttribute("src", "");
+        }
+    });
+</script>

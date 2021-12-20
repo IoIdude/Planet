@@ -1,0 +1,102 @@
+﻿@model Planet.Models.User;
+@{
+    ViewBag.Title = "Edit user";
+}
+
+<style>
+    .image-preview {
+        width: 300px;
+        min-height: 100px;
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+
+    .image-preview__image {
+        height: 100px;
+        width: 100px;
+        border-radius: 50px;
+        margin: 0 auto;
+        margin-bottom: 15px;
+    }
+</style>
+
+<form asp-action="edit" asp-controller="home" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <input type="text" asp-for="Surname" placeholder="Surname" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="text" asp-for="Name" placeholder="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="text" asp-for="middle_Name" placeholder="Middle Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="date" asp-for="birth_day" placeholder="dd.mm.yy" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="email" asp-for="Email" placeholder="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="text" asp-for="Login" placeholder="Login" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="password" asp-for="Password" placeholder="*****" class="form-control" />
+    </div>
+    <div class="image-preview color" id="imagePreview" style="display: contents;">
+        <img @Html.Raw("<img src=\"data:image/jpeg;base64," + Convert.ToBase64String(Model.Avatar) + "\" ") class="image-preview__image" style="justify-content: center; display: block;" />
+        <span class="image-preview__default-text"></span>
+    </div>
+    @*<div>
+        <div>
+            <img class="avatar" @Html.Raw("<img style='width:100px;height:100px;display: block;margin: 0 auto;image-rendering: pixelated;' src=\"data:image/jpeg;base64," + Convert.ToBase64String(Model.Avatar) + "\" ") />
+        </div>
+    </div>*@
+    <div class="form-group">
+        <input type="file" asp-for="Avatar" name="uploadImg" class="form-control" id="uploadImgId" required />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Edit" class="btn btn-default" />
+    </div>
+    <div>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Index">Back to List</a>
+        }
+        else
+        {
+            <a asp-action="Profile">Back to Profile</a>
+        }
+    </div>
+</form>
+
+<script>
+    const uploadImg = document.getElementById("uploadImgId");
+    const previewContainer = document.getElementById("imagePreview");
+    const previewImage = previewContainer.querySelector(".image-preview__image");
+    const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+
+    uploadImg.addEventListener("change", function () {
+        const file = this.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            previewDefaultText.style.display = "none";
+            previewImage.style.display = "block";
+
+            reader.addEventListener("load", function () {
+                console.log(this);
+                previewImage.setAttribute("src", this.result);
+            });
+
+            reader.readAsDataURL(file);
+        } else {
+            previewDefaultText.style.display = null;
+            previewImage.style.display = null;
+            previewImage.setAttribute("src", "");
+        }
+    });
+</script>

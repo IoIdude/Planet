@@ -1,0 +1,94 @@
+﻿@model IndexViewModel
+@{
+    ViewBag.Title = "Posts";
+}
+
+<style>
+    .btn-default {
+        display: inline-block;
+        width: 140px;
+        line-height: 45px;
+        border-radius: 45px;
+        margin: 10px 20px;
+        color: #524f4e;
+        background: white;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+        transition: .3s;
+    }
+
+        .btn-default:hover {
+            background: #2EE59D;
+            box-shadow: 0 15px 20px rgba(46, 229, 157, .4);
+            color: white;
+            transform: translateY(-7px);
+        }
+
+    .form-control {
+        border-radius: 45px;
+    }
+
+        .form-control:hover {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+    .color {
+        margin: 10px;
+        background: linear-gradient(135deg, #71b7e6, #9b59b6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .avatar {
+        border-radius: 20px;
+    }
+
+    .a {
+        margin-left: 500px;
+    }
+</style>
+
+@if (Model.Posts != null)
+{
+    @foreach (var item in Model.Posts)
+    {
+        if (item.UserID == Model.ID)
+        {
+            <div style="height: 41em; align-items: center; justify-content: center; display: flex; margin: 100px 0;">
+                <form>
+                    <div style="width: 520px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); padding: 10px; border-radius: 20px; margin: 40px 0;">
+                        <div class="color" style="text-align: center; font-size: 20px; color: deeppink">
+                            <p>@item.Title</p>
+                        </div>
+                        <div class="form-group">
+                            <a class="color" style=" word-break: break-all; font-size: 19px; color: deeppink">@item.Message</a>
+                        </div>
+                        <div>
+                            <div>
+                                <img class="avatar" @Html.Raw("<img style='width:500px; margin-bottom: 10px; height:500px;' src=\"data:image/jpeg;base64," + Convert.ToBase64String(item.Picture) + "\" ") />
+                            </div>
+                        </div>
+                            @if (Model.ID == Model.IdentityUserLog)
+                            {
+                                <div>
+                                    <div style="display: flex; justify-content: center;">
+                                        <input type="submit" value="Edit" class="btn btn-default" asp-action="EditPost" asp-controller="home" asp-route-id="@item.id" formmethod="get"/>
+                                        <input type="submit" value="Delete" class="btn btn-default" asp-action="DeletePost" asp-controller="home" asp-route-id="@item.id" formmethod="post"/>
+                                    </div>
+                                </div>
+                            }
+                    </div>
+                </form>
+            </div>
+        }
+    }
+}
+<form>
+    <div>
+        <div style="display: flex; justify-content: center;">
+            <input type="submit" value="Back" class="btn btn-default" method="get" asp-controller="home" asp-action="Profile" />
+        </div>
+    </div>
+</form>
+
+
+

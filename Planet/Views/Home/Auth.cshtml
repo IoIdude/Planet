@@ -1,0 +1,62 @@
+﻿@model Planet.Models.User;
+@{
+    ViewBag.Title = "Authentication";
+}
+
+<style>
+    .btn-default {
+        display: inline-block;
+        width: 140px;
+        line-height: 45px;
+        border-radius: 45px;
+        margin: 10px 20px;
+        color: #524f4e;
+        background: white;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+        transition: .3s;
+    }
+
+    .btn-default:hover {
+        background: #2EE59D;
+        box-shadow: 0 15px 20px rgba(46, 229, 157, .4);
+        color: white;
+        transform: translateY(-7px);
+    }
+
+    .form-control {
+        border-radius: 45px;
+    }
+
+    .form-control:hover {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .color {
+        margin: 10px;
+        background: linear-gradient(135deg, #71b7e6, #9b59b6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+</style>
+
+<div style="height: 45em; display: flex; align-items: center; justify-content: center;">
+    <form asp-action="Auth" asp-controller="home" asp-antiforgery="true">
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <div style="margin: 0; box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); padding: 10px; border-radius: 20px;">
+            <div class="color" style="text-align: center; font-size: 20px; color: deeppink">
+                <p>Authorization</p>
+            </div>
+            <div class="form-group">
+                <input type="text" asp-for="Login" placeholder="Login" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <input type="password" asp-for="Password" placeholder="*****" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-default" />
+                <input type="submit" value="Register" formmethod="get" class="btn btn-default" asp-action="Reg" asp-controller="home" formnovalidate />
+            </div>
+        </div>
+    </form>
+</div>
+
