@@ -205,7 +205,7 @@ namespace Planet.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Reg(User user, IFormFile uploadImg)
         {
             if (ModelState.IsValid)
@@ -260,17 +260,17 @@ namespace Planet.Controllers
             return RedirectToAction("Auth");
         }
 
-        [HttpGet]
-        public IActionResult Auth()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult Auth()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Auth(User user)
         {
-            if (ModelState.IsValid)
+            if (user.Login != null)
             {
                 User proverka = db.Users.Include(p => p.Role).FirstOrDefault(m => m.Login == user.Login && m.Password == user.Password);
                 
@@ -278,16 +278,14 @@ namespace Planet.Controllers
                 {
                     await Authenticate(proverka);
 
-
-                    if (HttpContext.User.IsInRole("Admin"))
+                    if (proverka.RoleID == db.Roles.FirstOrDefault(p => p.Role_Name == "Admin").Id) // HttpContext.User.IsInRole("Admin")
                     {
                         return RedirectToAction("Index");
                     }
-                    else if (HttpContext.User.IsInRole("User"))
+                    else if (proverka.RoleID == db.Roles.FirstOrDefault(p => p.Role_Name == "User").Id) // HttpContext.User.IsInRole("User")
                     {
                         return RedirectToAction("Profile");
                     }
-        
                 }
                 else
                 {
@@ -295,7 +293,7 @@ namespace Planet.Controllers
                 }
             }
 
-            return View(user);
+            return View();
         }
 
         [HttpGet]
@@ -364,8 +362,6 @@ namespace Planet.Controllers
             //HttpContext.Session.SetString("loginUser", user.Login);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
-
-            
         }
 
         public IActionResult AddPost()
@@ -487,7 +483,7 @@ namespace Planet.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             // удаляем аутентификационные куки

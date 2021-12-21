@@ -40,7 +40,7 @@
 </style>
 
 <div style="height: 45em; display: flex; align-items: center; justify-content: center;">
-    <form asp-action="Auth" asp-controller="home" asp-antiforgery="true">
+    <form method="get" asp-action="Auth" asp-controller="home" asp-antiforgery="true">
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div style="margin: 0; box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); padding: 10px; border-radius: 20px;">
             <div class="color" style="text-align: center; font-size: 20px; color: deeppink">
